@@ -58,3 +58,4 @@ class Board:
             
         return boardString
    
+print(Board())
