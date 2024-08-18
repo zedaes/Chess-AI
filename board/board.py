@@ -56,6 +56,18 @@ class Board:
                     boardString += piece_symbols.get(type(cell), "X") + " "
             boardString += "\n"
             
-        return boardString
+        return boardString[::-1]
+
+board = Board()
    
-print(Board())
+whitePawns = [Pawn(0, Position(1, i)) for i in range(8)]
+for pawn in whitePawns:
+    print(pawn.position, pawn.getColor())
+    board.placePiece(pawn)
+    
+blackPawns = [Pawn(1, Position(6, i)) for i in range(8)]
+for pawn in blackPawns:
+    print(pawn.position, pawn.getColor())
+    board.placePiece(pawn)
+    
+print(board)

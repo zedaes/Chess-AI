@@ -7,10 +7,11 @@ class Position:
     def fromAlgebraic(cls, algebraicNotation):
         column = ord(algebraicNotation[0]) - ord('a')
         row = int(algebraicNotation[1]) - 1
+        
         return cls(row, column)
     
     def toAlgebraic(self):
-        column = chr(self.col + ord('a'))
+        column = chr(self.column + ord('a'))
         row = str(self.row + 1)
 
         return column + row

@@ -16,6 +16,12 @@ class Piece:
     def isValidMove(self, newPosition = Position(0, 0), board = None):
         raise NotImplementedError("This method should be overridden by subclasses.")
     
+    def getColor(self):
+        if self.color == 0:
+            return "white"
+        else:
+            return "black"
+    
     def __str__(self):
         return f"{self.__class__.__name__}({self.color}, {self.position})"
 
