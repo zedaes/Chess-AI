@@ -11,3 +11,44 @@ class Rook(Piece):
             self.image = 'img/whiteRook.png'
         else:
             self.image = 'img/blackRook.png'
+            
+    def isValidMove(self, newPosition=Position(0, 0), board=None):
+        newPositionPiece = board.board[newPosition.row][newPosition.column]
+        if newPositionPiece is not None and newPositionPiece.color == self.color:
+            print(f"Move invalid: target position {newPosition} occupied by same color piece.")
+            return False
+
+        deltaX = newPosition.row - self.position.row
+        deltaY = newPosition.column - self.position.column
+        
+        if deltaX == 0 and abs(deltaY) > 0:
+            stepY = deltaY // abs(deltaY)
+            for i in range(1, abs(deltaY)):
+                column = self.position.column + stepY * i
+                if board.board[self.position.row][column] is not None:
+                    print(f"Move invalid: path blocked at {Position(self.position.row, column)}")
+                    return False
+            return True
+            
+        if deltaY == 0 and abs(deltaX) > 0:
+            stepX = deltaX // abs(deltaX)
+            for i in range(1, abs(deltaX)):
+                row = self.position.row + stepX * i
+                if board.board[row][self.position.column] is not None:
+                    print(f"Move invalid: path blocked at {Position(row, self.position.column)}")
+                    return False
+            return True
+        
+        print(f"Move invalid: move not recognized. deltaX: {deltaX}, deltaY: {deltaY}")
+        return False
+    
+    def possibleMoves(self, board=None):
+        possibleMoves = []
+        for i in range(0, 8):
+            for j in range(0, 8):
+                newPosition = Position(i, j)
+                if newPosition != self.position:
+                    if self.isValidMove(newPosition, board):
+                        possibleMoves.append(newPosition)
+                        
+        return possibleMoves
