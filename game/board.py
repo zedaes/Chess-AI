@@ -122,12 +122,25 @@ board = Board()
 board.setup()
 print(board)
 
-board.pawns.remove(board.pawns[2])
+# Remove the queen from the queens list
+board.queens.remove(board.queens[0])
 
-board.pawns.append(Pawn(1, Position(1, 2)))
-
+# Test with a pawn
+board.movePiece(board.pawns[0], Position(0, 3))
 print(board)
 
-board.movePiece(board.queens[0], Position(1, 2))
+# Test with a rook
+board.movePiece(board.rooks[0], Position(0, 4))
+print(board)
 
+# Test with a knight
+board.movePiece(board.knights[0], Position(1, 4))
+print(board)
+
+# Test with a bishop
+board.movePiece(board.bishops[0], Position(2, 4))
+print(board)
+
+# Test with a king
+board.movePiece(board.kings[0], Position(3, 4))
 print(board)
