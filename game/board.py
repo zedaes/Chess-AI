@@ -10,7 +10,6 @@ from pieces.rook import Rook
 
 class Board:
     def __init__(self):
-        self.board = [[None for _ in range(8)] for _ in range(8)]
         self.pawns = []
         self.rooks = []
         self.knights = []
@@ -44,13 +43,13 @@ class Board:
     def pieces(self):
         return self.whitePieces + self.blackPieces
     
-    def placePiece(self, piece):
-        position = piece.position
-        if self.isWithinBounds(position) and self.board[position.row][position.column] is None:
-            self.board[position.row][position.column] = piece
-            piece.position = position
-        else:
-            raise ValueError("Invalid position or position already occupied")
+    @property
+    def board(self):
+        board = [[None for _ in range(8)] for _ in range(8)]
+        for piece in self.pieces:
+            board[piece.position.row][piece.position.column] = piece
+        
+        return board
     
     def movePiece(self, piece, newPosition):
         if not isinstance(piece, Piece):
@@ -59,11 +58,27 @@ class Board:
         if not isinstance(newPosition, Position):
             raise ValueError("The new position must be an instance of Position")
         
-        if self.isWithinBounds(newPosition): #and piece.isValidMove(newPosition, self):
+        if self.isWithinBounds(newPosition) and piece.isValidMove(newPosition, self):
             currentPosition = piece.position
             self.board[currentPosition.row][currentPosition.column] = None
-            self.board[newPosition.row][newPosition.column] = piece
-            piece.move(newPosition)
+            dumbPiece = self.board[newPosition.row][newPosition.column]
+            if dumbPiece is not None and dumbPiece in self.pieces:
+                match type(dumbPiece):
+                    case 'Pawn':
+                        self.pawns.remove(dumbPiece)
+                    case 'Rook':
+                        self.rooks.remove(dumbPiece)
+                    case 'Knight':
+                        self.knights.remove(dumbPiece)
+                    case 'Bishop':
+                        self.bishops.remove(dumbPiece)
+                    case 'King':
+                        self.kings.remove(dumbPiece)
+                    case 'Queen':
+                        self.queens.remove(dumbPiece)
+                    case _:
+                        print("just give up...")
+            piece.position = Position(newPosition.row, newPosition.column)
         else:
             raise ValueError("Invalid move")
         
@@ -78,15 +93,11 @@ class Board:
         self.queens = [Queen(0, Position(0, 3)), Queen(1, Position(7, 3))]
         self.kings = [King(0, Position(0, 4)), King(1, Position(7, 4))]
             
-        for piece in self.pieces:
-            self.placePiece(piece)
-            
     def display(self):
         pass
-                
-        
+                   
     def __str__(self):
-        piece_symbols = {
+        pieceSymbols = {
             Pawn: "P",
             Rook: "R",
             Knight: "N",
@@ -101,7 +112,7 @@ class Board:
                 if cell is None:
                     boardString += ". "
                 else:
-                    boardString += piece_symbols.get(type(cell), "X") + " "
+                    boardString += pieceSymbols.get(type(cell), "X") + " "
                 
             boardString += "\n"
             
@@ -109,7 +120,11 @@ class Board:
 
 board = Board()
 board.setup()
-board.movePiece(board.bishops[0], Position(1, 3))
+print(board.pawns)
+
+board.pawns.remove(board.board[1][3])
+
+board.movePiece(board.bishops[0], Position(3, 5))
 print(board)
-print(board.bishops[0].isValidMove(Position(4, 4), board))
-print(board.board[0][0].color)
+
+print(board.bishops[0].possibleMoves(board))

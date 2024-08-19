@@ -7,12 +7,6 @@ class Piece:
         self.x = self.position.row
         self.y = self.position.column
     
-    def move(self, newPosition = Position(0, 0)):
-        if True: # self.isValidMove(newPosition):
-            self.position = newPosition
-        else:
-            raise ValueError("Invalid move for this piece.")
-    
     def isValidMove(self, newPosition = Position(0, 0), board = None):
         raise NotImplementedError("This method should be overridden by subclasses.")
     
