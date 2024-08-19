@@ -59,7 +59,7 @@ class Board:
         if not isinstance(newPosition, Position):
             raise ValueError("The new position must be an instance of Position")
         
-        if self.isWithinBounds(newPosition) and piece.isValidMove(newPosition, self):
+        if self.isWithinBounds(newPosition): #and piece.isValidMove(newPosition, self):
             currentPosition = piece.position
             self.board[currentPosition.row][currentPosition.column] = None
             self.board[newPosition.row][newPosition.column] = piece
@@ -96,15 +96,20 @@ class Board:
         }
         boardString = ""
         for row in self.board:
+            row.reverse()
             for cell in row:
                 if cell is None:
                     boardString += ". "
                 else:
                     boardString += piece_symbols.get(type(cell), "X") + " "
+                
             boardString += "\n"
             
         return boardString[::-1]
 
 board = Board()
 board.setup()
+board.movePiece(board.bishops[0], Position(1, 3))
 print(board)
+print(board.bishops[0].isValidMove(Position(4, 4), board))
+print(board.board[0][0].color)

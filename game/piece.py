@@ -8,7 +8,7 @@ class Piece:
         self.y = self.position.column
     
     def move(self, newPosition = Position(0, 0)):
-        if self.isValidMove(newPosition):
+        if True: # self.isValidMove(newPosition):
             self.position = newPosition
         else:
             raise ValueError("Invalid move for this piece.")
