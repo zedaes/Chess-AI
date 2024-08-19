@@ -121,8 +121,13 @@ class Board:
 board = Board()
 board.setup()
 print(board)
-board.pawns.append(Pawn(1, Position(2, 2)))
-print(board.pawns)
-board.movePiece(board.knights[0], Position(2, 2))
 
-print(board.pawns)
+board.pawns.remove(board.pawns[2])
+
+board.pawns.append(Pawn(1, Position(1, 2)))
+
+print(board)
+
+board.movePiece(board.queens[0], Position(1, 2))
+
+print(board)
