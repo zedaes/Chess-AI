@@ -63,22 +63,22 @@ class Board:
             self.board[currentPosition.row][currentPosition.column] = None
             dumbPiece = self.board[newPosition.row][newPosition.column]
             if dumbPiece is not None and dumbPiece in self.pieces:
-                match type(dumbPiece):
-                    case 'Pawn':
-                        self.pawns.remove(dumbPiece)
-                    case 'Rook':
-                        self.rooks.remove(dumbPiece)
-                    case 'Knight':
-                        self.knights.remove(dumbPiece)
-                    case 'Bishop':
-                        self.bishops.remove(dumbPiece)
-                    case 'King':
-                        self.kings.remove(dumbPiece)
-                    case 'Queen':
-                        self.queens.remove(dumbPiece)
-                    case _:
-                        print("just give up...")
-            piece.position = Position(newPosition.row, newPosition.column)
+                if type(dumbPiece) is Pawn:
+                    self.pawns.remove(dumbPiece)
+                elif type(dumbPiece) is Knight:
+                    self.knights.remove(dumbPiece)
+                elif type(dumbPiece) is Queen:
+                    self.queens.remove(dumbPiece)
+                elif type(dumbPiece) is King:
+                    self.kings.remove(dumbPiece)
+                elif type(dumbPiece) is Bishop:
+                    self.bishops.remove(dumbPiece)
+                elif type(dumbPiece) is Rook:
+                    self.rooks.remove(dumbPiece)
+                else:
+                    raise ValueError("Invalid piece type")
+                
+            piece.position = Position(newPosition.column, newPosition.row)
         else:
             raise ValueError("Invalid move")
         
@@ -86,12 +86,12 @@ class Board:
         return 0 <= position.row < 8 and 0 <= position.column < 8
     
     def setup(self):
-        self.pawns = [Pawn(0, Position(1, i)) for i in range(8)] + [Pawn(1, Position(6, i)) for i in range(8)]
-        self.rooks = [Rook(0, Position(0, 0)), Rook(0, Position(0, 7)), Rook(1, Position(7, 0)), Rook(1, Position(7, 7))]
-        self.knights = [Knight(0, Position(0, 1)), Knight(0, Position(0, 6)), Knight(1, Position(7, 1)), Knight(1, Position(7, 6))]
-        self.bishops = [Bishop(0, Position(0, 2)), Bishop(0, Position(0, 5)), Bishop(1, Position(7, 2)), Bishop(1, Position(7, 5))]
-        self.queens = [Queen(0, Position(0, 3)), Queen(1, Position(7, 3))]
-        self.kings = [King(0, Position(0, 4)), King(1, Position(7, 4))]
+        self.pawns = [Pawn(0, Position(i, 1)) for i in range(8)] + [Pawn(1, Position(i, 6)) for i in range(8)]
+        self.rooks = [Rook(0, Position(0, 0)), Rook(0, Position(7, 0)), Rook(1, Position(0, 7)), Rook(1, Position(7, 7))]
+        self.knights = [Knight(0, Position(1, 0)), Knight(0, Position(6, 0)), Knight(1, Position(1, 7)), Knight(1, Position(6, 7))]
+        self.bishops = [Bishop(0, Position(2, 0)), Bishop(0, Position(5, 0)), Bishop(1, Position(2, 7)), Bishop(1, Position(5, 7))]
+        self.queens = [Queen(0, Position(3, 0)), Queen(1, Position(3, 7))]
+        self.kings = [King(0, Position(4, 0)), King(1, Position(4, 7))]
             
     def display(self):
         pass
@@ -120,11 +120,9 @@ class Board:
 
 board = Board()
 board.setup()
-print(board.pawns)
-
-board.pawns.remove(board.board[1][3])
-
-board.movePiece(board.bishops[0], Position(3, 5))
 print(board)
-
-print(board.bishops[0].possibleMoves(board))
+board.pawns.append(Pawn(1, Position(2, 2)))
+print(board)
+board.movePiece(board.knights[0], Position(2, 2))
+print(board)
+print(board.pawns)

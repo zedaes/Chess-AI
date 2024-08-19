@@ -1,6 +1,5 @@
 from piece import Piece
 from position import Position
-import math
 
 class Bishop(Piece):
     def __init__(self, color=0, position=Position(0, 0)):
@@ -40,7 +39,6 @@ class Bishop(Piece):
         for i in range(0, 8):
             for j in range(0, 8):
                 newPosition = Position(i, j)
-                print(newPosition.row, newPosition.column)
                 if newPosition != self.position:
                     if self.isValidMove(newPosition, board):
                         possibleMoves.append(newPosition)

@@ -1,5 +1,5 @@
 class Position:
-    def __init__(self, row, column):
+    def __init__(self, column, row):
         self.row = row
         self.column = column
     
