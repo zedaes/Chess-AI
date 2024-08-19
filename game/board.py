@@ -15,7 +15,7 @@ class Board:
         self.knights = []
         self.bishops = []
         self.queens = []
-        self.kings = []
+        self.kings = []        
         
     @property
     def whitePieces(self):
