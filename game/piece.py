@@ -4,8 +4,8 @@ class Piece:
     def __init__(self, color = 0, position = Position(0, 0)):
         self.color = color
         self.position = position
-        self.x = self.position.row
-        self.y = self.position.column
+        self.row = self.position.row
+        self.column = self.position.column
     
     def isValidMove(self, newPosition = Position(0, 0), board = None):
         raise NotImplementedError("This method should be overridden by subclasses.")

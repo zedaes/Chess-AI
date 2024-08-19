@@ -4,8 +4,8 @@ from position import Position
 class Queen(Piece):
     def __init__(self, color=0, position=Position(0, 0)):
         super().__init__(color, position)
-        self.x = self.position.row
-        self.y = self.position.column
+        self.row = self.position.row
+        self.column = self.position.column
         
         if color == 0:
             self.image = 'img/whiteQueen.png'
@@ -26,25 +26,25 @@ class Queen(Piece):
             stepY = deltaY // abs(deltaY)
             
             for i in range(1, abs(deltaX)):
-                x = self.position.row + stepX * i
-                y = self.position.column + stepY * i
-                if board.board[x][y] is not None:
+                row = self.position.row + stepX * i
+                column = self.position.column + stepY * i
+                if board.board[row][column] is not None:
                     return False
             return True
         
         if deltaX == 0 and abs(deltaY) > 0:
             stepY = deltaY // abs(deltaY)
             for i in range(1, abs(deltaY)):
-                y = self.position.column + stepY * i
-                if board.board[self.position.row][y] is not None:
+                column = self.position.column + stepY * i
+                if board.board[self.position.row][column] is not None:
                     return False
             return True
             
         if deltaY == 0 and abs(deltaX) > 0:
             stepX = deltaX // abs(deltaX)
             for i in range(1, abs(deltaX)):
-                x = self.position.row + stepX * i
-                if board.board[x][self.position.column] is not None:
+                row = self.position.row + stepX * i
+                if board.board[row][self.position.column] is not None:
                     return False
             return True
         

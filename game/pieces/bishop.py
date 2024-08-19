@@ -5,7 +5,7 @@ class Bishop(Piece):
     def __init__(self, color=0, position=Position(0, 0)):
         super().__init__(color, position)
         self.x = self.position.row
-        self.y = self.position.column
+        self.column = self.position.column
         
         if color == 0:
             self.image = 'img/whiteBishop.png'
@@ -26,9 +26,9 @@ class Bishop(Piece):
             stepY = deltaY // abs(deltaY)
             
             for i in range(1, abs(deltaX)):
-                x = self.position.row + stepX * i
-                y = self.position.column + stepY * i
-                if board.board[x][y] is not None:
+                row = self.position.row + stepX * i
+                column = self.position.column + stepY * i
+                if board.board[row][column] is not None:
                     return False
             return True
         

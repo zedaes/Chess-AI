@@ -4,8 +4,8 @@ from position import Position
 class Knight(Piece):
     def __init__(self, color=0, position=Position(0, 0)):
         super().__init__(color, position)
-        self.x = self.position.row
-        self.y = self.position.column
+        self.row = self.position.row
+        self.column = self.position.column
         
         if color == 0:
             self.image = 'img/whiteKnight.png'
@@ -31,6 +31,7 @@ class Knight(Piece):
         for i in range(0, 8):
             for j in range(0, 8):
                 newPosition = Position(i, j)
+
                 if newPosition != self.position:
                     if self.isValidMove(newPosition, board):
                         possibleMoves.append(newPosition)

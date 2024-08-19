@@ -4,8 +4,8 @@ from position import Position
 class Pawn(Piece):
     def __init__(self, color=0, position=Position(0, 0)):
         super().__init__(color, position)
-        self.x = self.position.row
-        self.y = self.position.column
+        self.row = self.position.row
+        self.column = self.position.column
         
         if color == 0:
             self.image = 'img/whitePawn.png'
