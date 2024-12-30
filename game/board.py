@@ -130,7 +130,7 @@ board.movePiece(board.pawns[0], Position(0, 3))
 print(board)
 
 # Test with a rook
-board.movePiece(board.rooks[0], Position(0, 4))
+board.movePiece(board.rooks[0], Position(0, 2))
 print(board)
 
 # Test with a knight
