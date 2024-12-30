@@ -6,49 +6,50 @@ class Rook(Piece):
         super().__init__(color, position)
         self.row = self.position.row
         self.column = self.position.column
+        self.has_moved = False
         
         if color == 0:
-            self.image = 'img/whiteRook.png'
+            self.image = '/assets/white_rook.png'
         else:
-            self.image = 'img/blackRook.png'
+            self.image = '/assets/black_rook.png'
             
-    def isValidMove(self, newPosition=Position(0, 0), board=None):
-        newPositionPiece = board.board[newPosition.row][newPosition.column]
-        if newPositionPiece is not None and newPositionPiece.color == self.color:
-            print(f"Move invalid: target position {newPosition} occupied by same color piece.")
+    def is_valid_move(self, new_position=Position(0, 0), board=None):
+        new_position_piece = board.board[new_position.row][new_position.column]
+        if new_position_piece is not None and new_position_piece.color == self.color:
+            print(f"Move invalid: target position {new_position} occupied by same color piece.")
             return False
 
-        deltaX = newPosition.row - self.position.row
-        deltaY = newPosition.column - self.position.column
+        delta_x = new_position.row - self.position.row
+        delta_y = new_position.column - self.position.column
         
-        if deltaX == 0 and abs(deltaY) > 0:
-            stepY = deltaY // abs(deltaY)
-            for i in range(1, abs(deltaY)):
-                column = self.position.column + stepY * i
+        if delta_x == 0 and abs(delta_y) > 0:
+            step_y = delta_y // abs(delta_y)
+            for i in range(1, abs(delta_y)):
+                column = self.position.column + step_y * i
                 if board.board[self.position.row][column] is not None:
                     print(f"Move invalid: path blocked at {Position(self.position.row, column)}")
                     return False
             return True
             
-        if deltaY == 0 and abs(deltaX) > 0:
-            stepX = deltaX // abs(deltaX)
-            for i in range(1, abs(deltaX)):
-                row = self.position.row + stepX * i
+        if delta_y == 0 and abs(delta_x) > 0:
+            step_x = delta_x // abs(delta_x)
+            for i in range(1, abs(delta_x)):
+                row = self.position.row + step_x * i
                 if board.board[row][self.position.column] is not None:
                     print(f"Move invalid: path blocked at {Position(row, self.position.column)}")
                     return False
             return True
         
-        print(f"Move invalid: move not recognized. deltaX: {deltaX}, deltaY: {deltaY}")
+        print(f"Move invalid: move not recognized. deltaX: {delta_x}, deltaY: {delta_y}")
         return False
     
-    def possibleMoves(self, board=None):
-        possibleMoves = []
-        for i in range(0, 8):
-            for j in range(0, 8):
-                newPosition = Position(i, j)
-                if newPosition != self.position:
-                    if self.isValidMove(newPosition, board):
-                        possibleMoves.append(newPosition)
+    def possible_moves(self, board=None):
+        possible_moves = []
+        for i in range(8):
+            for j in range(8):
+                new_position = Position(i, j)
+                if new_position != self.position:
+                    if self.is_valid_move(new_position, board):
+                        possible_moves.append(new_position)
                         
-        return possibleMoves
+        return possible_moves

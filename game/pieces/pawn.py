@@ -6,38 +6,39 @@ class Pawn(Piece):
         super().__init__(color, position)
         self.row = self.position.row
         self.column = self.position.column
+        self.has_moved = False
         
         if color == 0:
-            self.image = 'img/whitePawn.png'
+            self.image = '/assets/white_pawn.png'
         else:
-            self.image = 'img/blackPawn.png'
+            self.image = '/assets/black_pawn.png'
             
-    def isValidMove(self, newPosition, board):
+    def is_valid_move(self, new_position, board):
         direction = 1 if self.color == 0 else -1
-        startRow = 1 if self.color == 0 else 6
+        start_row = 1 if self.color == 0 else 6
 
-        if newPosition.column == self.position.column:
-            if newPosition.row == self.position.row + direction:
-                return board.board[newPosition.row][newPosition.column] is None
-            elif newPosition.row == self.position.row + 2 * direction and self.position.row == startRow:
-                intermediateRow = self.position.row + direction
+        if new_position.column == self.position.column:
+            if new_position.row == self.position.row + direction:
+                return board.board[new_position.row][new_position.column] is None
+            elif new_position.row == self.position.row + 2 * direction and self.position.row == start_row:
+                intermediate_row = self.position.row + direction
                 
-                return (board.board[newPosition.row][newPosition.column] is None and
-                        board.board[intermediateRow][newPosition.column] is None)
+                return (board.board[new_position.row][new_position.column] is None and
+                        board.board[intermediate_row][new_position.column] is None)
 
-        if abs(newPosition.column - self.position.column) == 1:
-            if newPosition.row == self.position.row + direction:
-                targetPiece = board.board[newPosition.row][newPosition.column]
-                if targetPiece is not None and targetPiece.color != self.color:
+        if abs(new_position.column - self.position.column) == 1:
+            if new_position.row == self.position.row + direction:
+                target_piece = board.board[new_position.row][new_position.column]
+                if target_piece is not None and target_piece.color != self.color:
                     return True
                 if self.position.row == (3 if self.color == 0 else 4):
-                    adjacentPawn = board.board[self.position.row][newPosition.column]
-                    if isinstance(adjacentPawn, Pawn) and adjacentPawn.color != self.color and adjacentPawn.enPassant:
+                    adjacent_pawn = board.board[self.position.row][new_position.column]
+                    if isinstance(adjacent_pawn, Pawn) and adjacent_pawn.color != self.color and adjacent_pawn.en_passant:
                         return True
 
         return False
 
-    def promote(self, newPieceType):
+    def promote(self, new_piece_type):
         if (self.color == 0 and self.position.row == 7) or (self.color == 1 and self.position.row == 0):
-            return newPieceType(self.color, self.position)
+            return new_piece_type(self.color, self.position)
         return self

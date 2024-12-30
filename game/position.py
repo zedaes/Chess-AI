@@ -4,13 +4,13 @@ class Position:
         self.column = column
     
     @classmethod
-    def fromAlgebraic(cls, algebraicNotation):
-        column = ord(algebraicNotation[0]) - ord('a')
-        row = int(algebraicNotation[1]) - 1
+    def from_algebraic(cls, algebraic_notation):
+        column = ord(algebraic_notation[0]) - ord('a')
+        row = int(algebraic_notation[1]) - 1
         
         return cls(row, column)
     
-    def toAlgebraic(self):
+    def to_algebraic(self):
         column = chr(self.column + ord('a'))
         row = str(self.row + 1)
 
@@ -20,7 +20,7 @@ class Position:
         return self.row == other.row and self.column == other.column
     
     def __str__(self):
-        return self.toAlgebraic()
+        return self.to_algebraic()
     
     def __repr__(self):
         return self.__str__()

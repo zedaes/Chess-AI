@@ -18,30 +18,30 @@ class Board:
         self.kings = []        
         
     @property
-    def whitePieces(self):
-        whitePawns = [pawn for pawn in self.pawns if pawn.color == 1]
-        whiteRooks = [rook for rook in self.rooks if rook.color == 1]
-        whiteKnights = [knight for knight in self.knights if knight.color == 1]
-        whiteBishops = [bishop for bishop in self.bishops if bishop.color == 1]
-        whiteQueens = [queen for queen in self.queens if queen.color == 1]
-        whiteKings = [king for king in self.kings if king.color == 1]
+    def white_pieces(self):
+        white_pawns = [pawn for pawn in self.pawns if pawn.color == 1]
+        white_rooks = [rook for rook in self.rooks if rook.color == 1]
+        white_knights = [knight for knight in self.knights if knight.color == 1]
+        white_bishops = [bishop for bishop in self.bishops if bishop.color == 1]
+        white_queens = [queen for queen in self.queens if queen.color == 1]
+        white_kings = [king for king in self.kings if king.color == 1]
         
-        return whitePawns + whiteRooks + whiteKnights + whiteBishops + whiteQueens + whiteKings
+        return white_pawns + white_rooks + white_knights + white_bishops + white_queens + white_kings
     
     @property
-    def blackPieces(self):
-        blackPawns = [pawn for pawn in self.pawns if pawn.color == 0]
-        blackRooks = [rook for rook in self.rooks if rook.color == 0]
-        blackKnights = [knight for knight in self.knights if knight.color == 0]
-        blackBishops = [bishop for bishop in self.bishops if bishop.color == 0]
-        blackQueens = [queen for queen in self.queens if queen.color == 0]
-        blackKings = [king for king in self.kings if king.color == 0]
+    def black_pieces(self):
+        black_pawns = [pawn for pawn in self.pawns if pawn.color == 0]
+        black_rooks = [rook for rook in self.rooks if rook.color == 0]
+        black_knights = [knight for knight in self.knights if knight.color == 0]
+        black_bishops = [bishop for bishop in self.bishops if bishop.color == 0]
+        black_queens = [queen for queen in self.queens if queen.color == 0]
+        black_kings = [king for king in self.kings if king.color == 0]
         
-        return blackPawns + blackRooks + blackKnights + blackBishops + blackQueens + blackKings
+        return black_pawns + black_rooks + black_knights + black_bishops + black_queens + black_kings
     
     @property
     def pieces(self):
-        return self.whitePieces + self.blackPieces
+        return self.white_pieces + self.black_pieces
     
     @property
     def board(self):
@@ -51,38 +51,39 @@ class Board:
         
         return board
     
-    def movePiece(self, piece, newPosition):
+    def move_piece(self, piece, new_position):
         if not isinstance(piece, Piece):
             raise ValueError("The object to move must be an instance of Piece")
         
-        if not isinstance(newPosition, Position):
+        if not isinstance(new_position, Position):
             raise ValueError("The new position must be an instance of Position")
         
-        if self.isWithinBounds(newPosition) and piece.isValidMove(newPosition, self):
-            currentPosition = piece.position
-            self.board[currentPosition.row][currentPosition.column] = None
-            dumbPiece = self.board[newPosition.row][newPosition.column]
-            if dumbPiece is not None and dumbPiece in self.pieces:
-                if type(dumbPiece) is Pawn:
-                    self.pawns.remove(dumbPiece)
-                elif type(dumbPiece) is Knight:
-                    self.knights.remove(dumbPiece)
-                elif type(dumbPiece) is Queen:
-                    self.queens.remove(dumbPiece)
-                elif type(dumbPiece) is King:
-                    self.kings.remove(dumbPiece)
-                elif type(dumbPiece) is Bishop:
-                    self.bishops.remove(dumbPiece)
-                elif type(dumbPiece) is Rook:
-                    self.rooks.remove(dumbPiece)
+        if self.is_within_bounds(new_position) and piece.is_valid_move(new_position, self):
+            piece.has_moved = True
+            current_position = piece.position
+            self.board[current_position.row][current_position.column] = None
+            target_piece = self.board[new_position.row][new_position.column]
+            if target_piece is not None and target_piece in self.pieces:
+                if type(target_piece) is Pawn:
+                    self.pawns.remove(target_piece)
+                elif type(target_piece) is Knight:
+                    self.knights.remove(target_piece)
+                elif type(target_piece) is Queen:
+                    self.queens.remove(target_piece)
+                elif type(target_piece) is King:
+                    self.kings.remove(target_piece)
+                elif type(target_piece) is Bishop:
+                    self.bishops.remove(target_piece)
+                elif type(target_piece) is Rook:
+                    self.rooks.remove(target_piece)
                 else:
                     raise ValueError("Invalid piece type")
                 
-            piece.position = Position(newPosition.column, newPosition.row)
+            piece.position = Position(new_position.column, new_position.row)
         else:
             raise ValueError("Invalid move")
         
-    def isWithinBounds(self, position):
+    def is_within_bounds(self, position):
         return 0 <= position.row < 8 and 0 <= position.column < 8
     
     def setup(self):
@@ -97,7 +98,7 @@ class Board:
         pass
                    
     def __str__(self):
-        pieceSymbols = {
+        piece_symbols = {
             Pawn: "P",
             Rook: "R",
             Knight: "N",
@@ -105,42 +106,16 @@ class Board:
             Queen: "Q",
             King: "K"
         }
-        boardString = ""
+        board_string = ""
         for row in self.board:
             row.reverse()
             for cell in row:
                 if cell is None:
-                    boardString += ". "
+                    board_string += ". "
                 else:
-                    boardString += pieceSymbols.get(type(cell), "X") + " "
+                    board_string += piece_symbols.get(type(cell), "X") + " "
                 
-            boardString += "\n"
+            board_string += "\n"
             
-        return boardString[::-1]
+        return board_string[::-1]
 
-board = Board()
-board.setup()
-print(board)
-
-# Remove the queen from the queens list
-board.queens.remove(board.queens[0])
-
-# Test with a pawn
-board.movePiece(board.pawns[0], Position(0, 3))
-print(board)
-
-# Test with a rook
-board.movePiece(board.rooks[0], Position(0, 2))
-print(board)
-
-# Test with a knight
-board.movePiece(board.knights[0], Position(1, 4))
-print(board)
-
-# Test with a bishop
-board.movePiece(board.bishops[0], Position(2, 4))
-print(board)
-
-# Test with a king
-board.movePiece(board.kings[0], Position(3, 4))
-print(board)

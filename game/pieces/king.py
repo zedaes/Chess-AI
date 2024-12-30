@@ -6,11 +6,12 @@ class King(Piece):
         super().__init__(color, position)
         self.row = self.position.row
         self.column = self.position.column
+        self.has_moved = False
         
         if color == 0:
-            self.image = 'img/whiteKing.png'
+            self.image = '/assets/whiteKing.png'
         else:
-            self.image = 'img/blackKing.png'
+            self.image = '/assets/blackKing.png'
 
     def isValidMove(self, newPosition=Position(0, 0), board=None):
         if not board:

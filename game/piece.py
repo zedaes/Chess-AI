@@ -7,13 +7,13 @@ class Piece:
         self.row = self.position.row
         self.column = self.position.column
     
-    def isValidMove(self, newPosition = Position(0, 0), board = None):
+    def is_valid_move(self, newPosition = Position(0, 0), board = None):
         raise NotImplementedError("This method should be overridden by subclasses.")
     
-    def possibleMoves(self, board = None):
+    def possible_moves(self, board = None):
         raise NotImplementedError("This method should be overridden by subclasses.")
     
-    def getColor(self):
+    def get_color(self):
         if self.color == 0:
             return "white"
         else:
